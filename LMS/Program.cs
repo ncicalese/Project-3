@@ -25,10 +25,10 @@ public class Program
             .AddEntityFrameworkStores<LMSIdentityDbContext>();
 
         // Uncomment the below after scaffolding
-        /*
+        
         builder.Services.AddDbContext<LMSContext>( options =>
             options.UseMySql( builder.Configuration["LMS:LMSConnectionString"], ServerVersion.AutoDetect( builder.Configuration["LMS:LMSConnectionString"] ) ) );
-        */
+        
 
         builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
