@@ -194,7 +194,92 @@ namespace LMS.Areas.Identity.Pages.Account
         /// <returns>The uID of the new user</returns>
         string CreateNewUser( string firstName, string lastName, DateTime DOB, string departmentAbbrev, string role )
         {
-            return "unknown";
+            int max = 0;
+            string uidString;
+
+            var studentQuery = from s in db.Students select s.UId;
+
+            foreach (var uid in studentQuery)
+            {
+                int temp = int.Parse(uid.Substring(1));
+                if(temp > max)
+                {
+                    max = temp;
+                }
+            }
+
+            var administratorQuery = from a in db.Administrators select a.UId;
+
+            foreach(var uid in administratorQuery)
+            {
+                int temp = int.Parse(uid.Substring(1));
+                if (temp > max)
+                {
+                    max = temp;
+                }
+            }
+
+            var professorQuery = from p in db.Professors select p.UId;
+
+            foreach (var uid in professorQuery)
+            {
+                int temp = int.Parse(uid.Substring(1));
+                if (temp > max)
+                {
+                    max = temp;
+                }
+            }
+
+            if (max == 0)
+            {
+                uidString = "u0000001";
+            } else 
+            {
+                uidString = "u" + (max+1).ToString("D7");
+            }
+
+            //System.Diagnostics.Debug.WriteLine("uidString: " + uidString);
+
+            if(role == "Student")
+            {
+                var s = new Student();
+                s.FName = firstName;
+                s.LName = lastName;
+                s.Dob = DateOnly.FromDateTime(DOB);
+
+                // CHANGE THIS ONCE COMMON CONTROLLER IMPLEMENTED
+                s.Major = "CS";
+                s.UId = uidString;
+                db.Students.Add(s);
+
+            } 
+            else if(role == "Administrator")
+            {
+                var a = new Administrator();
+                a.UId = uidString;
+                a.FName = firstName;
+                a.LName = lastName;
+                a.Dob = DateOnly.FromDateTime(DOB);
+                db.Administrators.Add(a);
+
+            } 
+            else if (role == "Professor")
+            {
+                var p = new Professor();
+                p.UId = uidString;
+                p.FName = firstName;
+                p.LName = lastName;
+                p.Dob = DateOnly.FromDateTime(DOB);
+
+                // CHANGE THIS ONCE COMMON CONTROLLER IMPLEMENTED
+                p.WorksIn = "CS";
+                db.Professors.Add(p);
+            }
+
+            db.SaveChanges();
+
+
+            return uidString;
         }
 
         /*******End code to modify********/
