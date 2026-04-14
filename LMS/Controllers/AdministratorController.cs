@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -50,8 +51,22 @@ namespace LMS.Controllers
         /// false if the department already exists, true otherwise.</returns>
         public IActionResult CreateDepartment(string subject, string name)
         {
-            
-            return Json(new { success = false});
+            Department d = new Department();
+            d.Name = name;
+            d.Subject = subject; 
+            // try to add a department
+            try
+            {
+                db.Departments.Add(d);
+                db.SaveChanges();  
+            } 
+            catch
+            {
+                // if it gets here return false in the json object
+                return Json(new { success = false });
+            }
+            // if it worked return true in the json object
+            return Json(new { success = true });
         }
 
 
@@ -65,8 +80,15 @@ namespace LMS.Controllers
         /// <returns>The JSON result</returns>
         public IActionResult GetCourses(string subject)
         {
-            
-            return Json(null);
+            var query = from c in db.Courses
+                        //should we check for capitalization?
+                        where c.Department == subject
+                        select new
+                        {
+                            number = c.Number,
+                            name = c.Name
+                        };
+            return Json(query.ToArray());
         }
 
         /// <summary>
@@ -80,8 +102,18 @@ namespace LMS.Controllers
         /// <returns>The JSON result</returns>
         public IActionResult GetProfessors(string subject)
         {
-            
-            return Json(null);
+            // this might return duplicate professors if a professor teaches more than 1 class
+            var query = from course in db.Courses
+                        join c in db.Classes on course.CatalogId equals c.Listing
+                        join p in db.Professors on c.TaughtBy equals p.UId
+                        where course.Department == subject
+                        select new
+                        {
+                            lname = p.LName,
+                            fname = p.FName,
+                            uid = p.UId
+                        };
+            return Json(query.ToArray());
             
         }
 
@@ -97,8 +129,22 @@ namespace LMS.Controllers
         /// <returns>A JSON object containing {success = true/false}.
         /// false if the course already exists, true otherwise.</returns>
         public IActionResult CreateCourse(string subject, int number, string name)
-        {           
-            return Json(new { success = false });
+        {
+            Course course = new Course();
+            course.Number = (uint)number;
+            course.Department = subject;
+            course.Name = name;
+            // not sure if we should query to see if a course exists or just do this, I think they have the same result
+            try
+            {
+                db.Courses.Add(course);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
         }
 
 
@@ -120,8 +166,32 @@ namespace LMS.Controllers
         /// a Class offering of the same Course in the same Semester,
         /// true otherwise.</returns>
         public IActionResult CreateClass(string subject, int number, string season, int year, DateTime start, DateTime end, string location, string instructor)
-        {            
-            return Json(new { success = false});
+        {
+            // get the courseID
+            var query = from course in db.Courses
+                        where course.Number == number && course.Department == subject
+                        select course.CatalogId;
+            uint listing = query.FirstOrDefault();
+
+            Class c = new Class();
+            c.Season = season;
+            c.Listing = listing;
+            c.Year = (uint)year;
+            // found out how to convert from DateTime to TimeOnly Here: https://stackoverflow.com/questions/4097127/getting-date-or-time-only-from-a-datetime-object cant remember if it was mentioned in class
+            c.StartTime = TimeOnly.FromDateTime(start);
+            c.EndTime = TimeOnly.FromDateTime(end);
+            c.Location = location;
+            c.TaughtBy = instructor;
+            try
+            {
+                db.Classes.Add(c);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
         }
 
 

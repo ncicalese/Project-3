@@ -29,8 +29,16 @@ namespace LMS.Controllers
         /// </summary>
         /// <returns>The JSON array</returns>
         public IActionResult GetDepartments()
-        {            
-            return Json(null);
+        {
+            //i think working as intended
+            var query = from d in db.Departments 
+                        select new 
+                        {
+                            name = d.Name, 
+                            subject = d.Subject 
+                        };
+            
+            return Json( query.ToArray() );
         }
 
 
@@ -83,7 +91,21 @@ namespace LMS.Controllers
         /// <param name="asgname">The name of the assignment in the category</param>
         /// <returns>The assignment contents</returns>
         public IActionResult GetAssignmentContents(string subject, int num, string season, int year, string category, string asgname)
-        {            
+        {
+            //haven't tested this yet
+            var query = from course in db.Courses
+                        join c in db.Classes on course.CatalogId equals c.Listing
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        where course.Department == subject && course.Number == num && c.Season == season && c.Year == year && ac.Name == category && a.Name == asgname
+                        select a.Contents;
+
+            foreach(var content in query)
+            {
+                System.Diagnostics.Debug.WriteLine(content);
+            }
+            //var query = from a in db.Assignments where a.AssignmentId == 1 select a.Contents;
+
             return Content("");
         }
 

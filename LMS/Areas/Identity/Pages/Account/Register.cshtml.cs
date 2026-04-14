@@ -247,8 +247,7 @@ namespace LMS.Areas.Identity.Pages.Account
                 s.LName = lastName;
                 s.Dob = DateOnly.FromDateTime(DOB);
 
-                // CHANGE THIS ONCE COMMON CONTROLLER IMPLEMENTED
-                s.Major = "CS";
+                s.Major = departmentAbbrev;
                 s.UId = uidString;
                 db.Students.Add(s);
 
@@ -271,8 +270,7 @@ namespace LMS.Areas.Identity.Pages.Account
                 p.LName = lastName;
                 p.Dob = DateOnly.FromDateTime(DOB);
 
-                // CHANGE THIS ONCE COMMON CONTROLLER IMPLEMENTED
-                p.WorksIn = "CS";
+                p.WorksIn = departmentAbbrev;
                 db.Professors.Add(p);
             }
 
