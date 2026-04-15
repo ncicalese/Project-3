@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/LMS/FileContentIndex
+/LMS/obj/Debug/net9.0/compressed

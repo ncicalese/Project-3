@@ -55,8 +55,21 @@ namespace LMS.Controllers
         /// </summary>
         /// <returns>The JSON array</returns>
         public IActionResult GetCatalog()
-        {            
-            return Json(null);
+        {
+            var query = from d in db.Departments
+                        select new
+                        {
+                            subject = d.Subject,
+                            dname = d.Name,
+                            courses = (from c in db.Courses
+                                       where c.Department == d.Subject
+                                       select new
+                                       {
+                                           number = c.Number,
+                                           cname = c.Name
+                                       }).ToArray()
+                        };
+            return Json(query.ToArray());
         }
 
         /// <summary>
@@ -148,6 +161,50 @@ namespace LMS.Controllers
         /// </returns>
         public IActionResult GetUser(string uid)
         {           
+            var student = (from s in db.Students 
+                           where s.UId == uid 
+                           join d in db.Departments on s.Major equals d.Subject
+                           select new 
+                           {
+                               fname = s.FName, 
+                               lname = s.LName, 
+                               uid = s.UId, 
+                               department = d.Name
+                           }).FirstOrDefault();
+
+            var professor = (from p in db.Professors 
+                            where p.UId == uid 
+                            join d in db.Departments on p.WorksIn equals d.Subject
+                            select new 
+                            {
+                                fname = p.FName, 
+                                lname = p.LName, 
+                                uid = p.UId, 
+                                department = d.Name
+                            }).FirstOrDefault();
+
+            var administrator = (from a in db.Administrators 
+                                where a.UId == uid 
+                                select new 
+                                {
+                                    fname = a.FName, 
+                                    lname = a.LName, 
+                                    uid = a.UId
+                                }).FirstOrDefault();
+
+            if (student != null)
+            {
+                return Json(student);
+            }
+            else if (professor != null)
+            {
+                return Json(professor);
+            }
+            else if (administrator != null)
+            {
+                return Json(administrator);
+            }
+
             return Json(new { success = false });
         }
 
