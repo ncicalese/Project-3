@@ -105,7 +105,7 @@ namespace LMS.Controllers
         /// <returns>The assignment contents</returns>
         public IActionResult GetAssignmentContents(string subject, int num, string season, int year, string category, string asgname)
         {
-            //haven't tested this yet
+            // Should work
             var query = from course in db.Courses
                         join c in db.Classes on course.CatalogId equals c.Listing
                         join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
@@ -113,13 +113,9 @@ namespace LMS.Controllers
                         where course.Department == subject && course.Number == num && c.Season == season && c.Year == year && ac.Name == category && a.Name == asgname
                         select a.Contents;
 
-            foreach(var content in query)
-            {
-                System.Diagnostics.Debug.WriteLine(content);
-            }
-            //var query = from a in db.Assignments where a.AssignmentId == 1 select a.Contents;
+            var contents = query.FirstOrDefault();
 
-            return Content("");
+            return Content(contents ?? "");
         }
 
 
@@ -138,8 +134,22 @@ namespace LMS.Controllers
         /// <param name="uid">The uid of the student who submitted it</param>
         /// <returns>The submission text</returns>
         public IActionResult GetSubmissionText(string subject, int num, string season, int year, string category, string asgname, string uid)
-        {            
-            return Content("");
+        {      
+            var query = from course in db.Courses
+                        join c in db.Classes on course.CatalogId equals c.Listing
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        join s in db.Submissions on a.AssignmentId equals s.Assignment
+                        where course.Department == subject && 
+                            course.Number == num && 
+                            c.Season == season && c.Year == year && 
+                            ac.Name == category && 
+                            a.Name == asgname && 
+                            s.Student == uid
+                        select s.SubmissionContents;
+
+            var contents = query.FirstOrDefault();
+            return Content(contents ?? "");
         }
 
 
