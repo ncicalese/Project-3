@@ -1,12 +1,13 @@
-﻿using System;
+﻿using LMS.Models.LMSModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using LMS.Models.LMSModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 [assembly: InternalsVisibleTo( "LMSControllerTests" )]
@@ -111,26 +112,27 @@ namespace LMS.Controllers
         public IActionResult GetAssignmentsInClass(string subject, int num, string season, int year, string uid)
         {
             // bunch of manual joins
-            var query = from c in db.Classes
-                        where c.Season == season
-                              && c.Year == year
-                              && c.Course.Department == subject
-                              && c.Course.Number == num
-                              && c.Enrolled.Any(e => e.Student == uid)
-                        from category in c.AssignmentCategories
-                        from assignment in category.Assignments
-                        join submission in db.Submissions.Where(s => s.Student == uid)
-                            on assignment.AssignmentId equals submission.Assignment into temp
-                        from sub in temp.DefaultIfEmpty()
-                        select new
-                        {
-                            aname = assignment.Name,
-                            cname = category.Name,
-                            due = assignment.Due,
-                            score = (uint?)sub.Score
-                        };
-                        
-            return Json(query.ToArray());
+            //var query = from c in db.Classes
+            //            where c.Season == season
+            //                  && c.Year == year
+            //                  && c.Course.Department == subject
+            //                  && c.Course.Number == num
+            //                  && c.Enrolled.Any(e => e.Student == uid)
+            //            from category in c.AssignmentCategories
+            //            from assignment in category.Assignments
+            //            join submission in db.Submissions.Where(s => s.Student == uid)
+            //                on assignment.AssignmentId equals submission.Assignment into temp
+            //            from sub in temp.DefaultIfEmpty()
+            //            select new
+            //            {
+            //                aname = assignment.Name,
+            //                cname = category.Name,
+            //                due = assignment.Due,
+            //                score = (uint?)sub.Score
+            //            };
+
+            //return Json(query.ToArray());
+            return Json(null);
         }
 
 
@@ -233,8 +235,28 @@ namespace LMS.Controllers
         /// <returns>A JSON object containing {success = {true/false}. 
         /// false if the student is already enrolled in the class, true otherwise.</returns>
         public IActionResult Enroll(string subject, int num, string season, int year, string uid)
-        {          
-            return Json(new { success = false});
+        {
+            //get classID
+            var classIDQuery = from course in db.Courses
+                               join c in db.Classes on course.CatalogId equals c.Listing
+                               where course.Department == subject && course.Number == num && c.Season == season && c.Year == year
+                               select c.ClassId;
+
+            Enrolled enrolled = new Enrolled();
+            enrolled.Class = classIDQuery.FirstOrDefault();
+            enrolled.Student = uid;
+            enrolled.Grade = "--";
+
+            try
+            {
+                db.Enrolleds.Add(enrolled);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
         }
 
 
@@ -251,7 +273,18 @@ namespace LMS.Controllers
         /// <param name="uid">The uid of the student</param>
         /// <returns>A JSON object containing a single field called "gpa" with the number value</returns>
         public IActionResult GetGPA(string uid)
-        {            
+        {
+            // cant find where this function gets used so cant test yet
+            // get a list of the student's grades
+            var query = from s in db.Students
+                        join e in db.Enrolleds on s.UId equals e.Student
+                        where s.UId == uid
+                        select e.Grade;
+
+            foreach(var grade in query)
+            {
+                System.Diagnostics.Debug.WriteLine("Grade: " + grade.FirstOrDefault());
+            }
             return Json(null);
         }
                 

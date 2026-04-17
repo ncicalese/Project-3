@@ -118,8 +118,20 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>The JSON array</returns>
         public IActionResult GetStudentsInClass(string subject, int num, string season, int year)
         {
-            
-            return Json(null);
+            var query = from c in db.Classes
+                        join co in db.Courses on c.Listing equals co.CatalogId
+                        join e in db.Enrolleds on c.ClassId equals e.Class
+                        join s in db.Students on e.Student equals s.UId
+                        where co.Department == subject && co.Number == num && c.Season == season && c.Year == year
+                        select new
+                        {
+                            fname = s.FName,
+                            lname = s.LName,
+                            uid = s.UId,
+                            dob = s.Dob,
+                            grade = e.Grade
+                        };
+            return Json(query.ToArray());
         }
 
 
@@ -142,6 +154,27 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>The JSON array</returns>
         public IActionResult GetAssignmentsInCategory(string subject, int num, string season, int year, string category)
         {
+            if(category == null)
+            {
+
+            }
+            else
+            {
+
+                // not finished yet, submissions count doesnt get updated
+                var query = from c in db.Classes
+                            join co in db.Courses on c.Listing equals co.CatalogId
+                            join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                            join a in db.Assignments on ac.CategoryId equals a.Category
+                            where ac.Name == category
+                            select new
+                            {
+                                aname = a.Name,
+                                cname = ac.Name,
+                                due = a.Due,
+                                submissions = 1
+                            };
+            }
             return Json(null);
         }
 
@@ -160,7 +193,16 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>The JSON array</returns>
         public IActionResult GetAssignmentCategories(string subject, int num, string season, int year)
         {
-            return Json(null);
+            var query = from c in db.Classes
+                        join co in db.Courses on c.Listing equals co.CatalogId
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        where co.Department == subject && co.Number == num && c.Season == season && c.Year == year
+                        select new
+                        {
+                            name = ac.Name,
+                            weight = ac.Weight
+                        };
+            return Json(query.ToArray());
         }
 
         /// <summary>
@@ -176,7 +218,29 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>A JSON object containing {success = true/false} </returns>
         public IActionResult CreateAssignmentCategory(string subject, int num, string season, int year, string category, int catweight)
         {
-            return Json(new { success = false });
+            // get classid
+            var classIDQuery = from c in db.Classes
+                               join co in db.Courses on c.Listing equals co.CatalogId
+                               where co.Department == subject && co.Number == num && c.Season == season && c.Year == year
+                               select c.ClassId;
+
+            uint classID = classIDQuery.FirstOrDefault();
+
+            AssignmentCategory ac = new AssignmentCategory();
+            ac.Weight = (uint)catweight;
+            ac.InClass = classID;
+            ac.Name = category;
+            
+            try
+            {
+                db.AssignmentCategories.Add(ac);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
         }
 
         /// <summary>
@@ -194,7 +258,32 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>A JSON object containing success = true/false</returns>
         public IActionResult CreateAssignment(string subject, int num, string season, int year, string category, string asgname, int asgpoints, DateTime asgdue, string asgcontents)
         {
-            return Json(new { success = false });
+            // get categoryID
+            var acIDQuery = from c in db.Classes
+                               join co in db.Courses on c.Listing equals co.CatalogId
+                               where co.Department == subject && co.Number == num && c.Season == season && c.Year == year
+                               join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                               where ac.Name == category
+                               select ac.CategoryId;
+
+            uint acID = acIDQuery.FirstOrDefault();
+
+            Assignment a = new Assignment();
+            a.Name = asgname;
+            a.Contents = asgcontents;
+            a.Due = asgdue;
+            a.MaxPoints = (uint)asgpoints;
+            a.Category = acID;
+            try
+            {
+                db.Assignments.Add(a);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
         }
 
 
@@ -217,7 +306,26 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>The JSON array</returns>
         public IActionResult GetSubmissionsToAssignment(string subject, int num, string season, int year, string category, string asgname)
         {
-            return Json(null);
+            var query = from c in db.Classes
+                        where c.Season == season && c.Year == year
+                        join co in db.Courses on c.Listing equals co.CatalogId
+                        where co.Department == subject && co.Number == num
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        where ac.Name == category && a.Name == asgname
+                        join s in db.Submissions on a.AssignmentId equals s.Assignment
+                        join stu in db.Students on s.Student equals stu.UId
+                        select new
+                        {
+                            fname = stu.FName,
+                            lname = stu.LName,
+                            uid = stu.UId,
+                            time = s.Time,
+                            score = s.Score
+                        };
+
+                        
+            return Json(query.ToArray());
         }
 
 
@@ -235,7 +343,28 @@ namespace LMS_CustomIdentity.Controllers
         /// <returns>A JSON object containing success = true/false</returns>
         public IActionResult GradeSubmission(string subject, int num, string season, int year, string category, string asgname, string uid, int score)
         {
-            return Json(new { success = false });
+            var query = from c in db.Classes
+                        where c.Season == season && c.Year == year
+                        join co in db.Courses on c.Listing equals co.CatalogId
+                        where co.Department == subject && co.Number == num
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        where ac.Name == category && a.Name == asgname
+                        join s in db.Submissions on a.AssignmentId equals s.Assignment
+                        join stu in db.Students on s.Student equals stu.UId
+                        where stu.UId == uid
+                        select s;
+
+            try
+            {
+                query.ToArray()[0].Score = (uint)score;
+                db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
         }
 
 
@@ -251,8 +380,21 @@ namespace LMS_CustomIdentity.Controllers
         /// <param name="uid">The professor's uid</param>
         /// <returns>The JSON array</returns>
         public IActionResult GetMyClasses(string uid)
-        {            
-            return Json(null);
+        {
+            var query = from c in db.Classes
+                        where c.TaughtBy == uid
+                        join co in db.Courses on c.Listing equals co.CatalogId
+                        select new
+                        {
+                            subject = co.Department,
+                            number = co.Number,
+                            name = co.Name,
+                            season = c.Season,
+                            year = c.Year
+                        };
+
+     
+            return Json(query.ToArray());
         }
 
 
