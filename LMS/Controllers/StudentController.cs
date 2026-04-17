@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using LMS.Models.LMSModels;
@@ -75,8 +76,22 @@ namespace LMS.Controllers
         /// <param name="uid">The uid of the student</param>
         /// <returns>The JSON array</returns>
         public IActionResult GetMyClasses(string uid)
-        {           
-            return Json(null);
+        {
+            // join course with class with enrolled with student
+            var query = from e in db.Enrolleds 
+                        join c in db.Classes on e.Class equals c.ClassId
+                        join course in db.Courses on c.Listing equals course.CatalogId
+                        where e.Student == uid
+                        select new
+                        {
+                            subject = course.Department,
+                            number = course.Number,
+                            name = course.Name,
+                            season = c.Season,
+                            year = c.Year,
+                            grade = e.Grade
+                        };
+            return Json(query.ToArray());
         }
 
         /// <summary>
@@ -94,8 +109,27 @@ namespace LMS.Controllers
         /// <param name="uid"></param>
         /// <returns>The JSON array</returns>
         public IActionResult GetAssignmentsInClass(string subject, int num, string season, int year, string uid)
-        {            
-            return Json(null);
+        {
+            // bugged i think
+            var query = from c in db.Classes
+                        join course in db.Courses on c.Listing equals course.CatalogId
+                        join e in db.Enrolleds on c.ClassId equals e.Class
+                        join stu in db.Students on e.Student equals stu.UId
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        join s in db.Submissions on a.AssignmentId equals s.Assignment
+                        into leftSide
+                        from l in leftSide.DefaultIfEmpty()
+                        where e.Student == uid && course.Department == subject && course.Number == num && c.Season == season && c.Year == year
+                        select new
+                        {
+                            aname = a.Name,
+                            cname = ac.Name,
+                            due = a.Due,
+                            score = (uint?)l.Score
+                        };
+                        
+            return Json(query.ToArray());
         }
 
 
@@ -119,8 +153,71 @@ namespace LMS.Controllers
         /// <returns>A JSON object containing {success = true/false}</returns>
         public IActionResult SubmitAssignmentText(string subject, int num, string season, int year,
           string category, string asgname, string uid, string contents)
-        {           
-            return Json(new { success = false });
+        {
+            // get the assignment ID
+            var assignmentIDQuery = from course in db.Courses
+                        join c in db.Classes on course.CatalogId equals c.Listing
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        where a.Name == asgname 
+                        && course.Department == subject 
+                        && course.Number == num 
+                        && c.Season == season 
+                        && c.Year == year 
+                        && ac.Name == category
+                        select a.AssignmentId;
+
+            uint assignmentID = assignmentIDQuery.FirstOrDefault();
+
+            var submissionQuery = from s in db.Submissions
+                                  where s.Student == uid && s.Assignment == assignmentID
+                                  select s.SubmissionContents;
+
+            
+
+            // if there is no submission, create a new one
+            if(submissionQuery.FirstOrDefault() == null)
+            {
+                //System.Diagnostics.Debug.WriteLine("Create new submission reached");
+                Submission submission = new Submission();
+                submission.Student = uid;
+                submission.SubmissionContents = contents;
+                submission.Assignment = assignmentID;
+                submission.Time = DateTime.Now;
+                submission.Score = 0;
+                try
+                {
+                    db.Submissions.Add(submission);
+                    db.SaveChanges();
+                    
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
+                
+
+            }
+            // if not, update the existing submission
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("Update submission reached");
+                var query = from s in db.Submissions
+                            where s.Student == uid && s.Assignment == assignmentID
+                            select s;
+                query.ToArray()[0].SubmissionContents = contents;
+                query.ToArray()[0].Time = DateTime.Now;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+            
+            return Json(new { success = true });
         }
 
 

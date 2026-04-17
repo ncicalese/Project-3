@@ -1,41 +1,41 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ewlag\\source\\repos\\Project-3\\",
+  "WorkspaceRootPath": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\controllers\\commoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\controllers\\commoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\controllers\\professorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\controllers\\professorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\controllers\\professorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\controllers\\commoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\controllers\\commoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\models\\lmsmodels\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\models\\lmsmodels\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\models\\lmsmodels\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\ewlag\\source\\repos\\project-3\\lms\\models\\lmsmodels\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|c:\\users\\njc75\\downloads\\lmshandout\\project-3\\lms\\models\\lmsmodels\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F7779DCA-6458-4556-ABC4-E8D6A159851E}|LMS\\LMS.csproj|solutionrelative:lms\\models\\lmsmodels\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -46,47 +46,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 1,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "CommonController.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\CommonController.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\CommonController.cs",
               "RelativeDocumentMoniker": "LMS\\Controllers\\CommonController.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\CommonController.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\CommonController.cs",
               "RelativeToolTip": "LMS\\Controllers\\CommonController.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAwwGkAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAK4AAAAAAAAAAAAqwLwAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T01:58:24.11Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "StudentController.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\StudentController.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\StudentController.cs",
               "RelativeDocumentMoniker": "LMS\\Controllers\\StudentController.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\StudentController.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\StudentController.cs",
               "RelativeToolTip": "LMS\\Controllers\\StudentController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAkwNoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T01:58:27.346Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "ProfessorController.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\ProfessorController.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\ProfessorController.cs",
               "RelativeDocumentMoniker": "LMS\\Controllers\\ProfessorController.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\ProfessorController.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\ProfessorController.cs",
               "RelativeToolTip": "LMS\\Controllers\\ProfessorController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAcwHUAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T01:58:26.386Z",
               "EditorCaption": ""
@@ -95,24 +91,23 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "LMS\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\HomeController.cs",
               "RelativeToolTip": "LMS\\Controllers\\HomeController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T01:58:24.911Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-15T01:58:24.911Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "AdministratorController.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\AdministratorController.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\AdministratorController.cs",
               "RelativeDocumentMoniker": "LMS\\Controllers\\AdministratorController.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Controllers\\AdministratorController.cs",
-              "RelativeToolTip": "LMS\\Controllers\\AdministratorController.cs",
-              "ViewState": "AgIAAIwAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Controllers\\AdministratorController.cs*",
+              "RelativeToolTip": "LMS\\Controllers\\AdministratorController.cs*",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAiwH4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T01:58:23.07Z",
               "EditorCaption": ""
@@ -121,53 +116,49 @@
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "Register.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
               "RelativeDocumentMoniker": "LMS\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
               "RelativeToolTip": "LMS\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
               "ViewState": "AgIAAO4AAAAAAAAAAAAAABQBAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T17:12:21.321Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T17:12:21.321Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
               "Title": "Department.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Models\\LMSModels\\Department.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Models\\LMSModels\\Department.cs",
               "RelativeDocumentMoniker": "LMS\\Models\\LMSModels\\Department.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Models\\LMSModels\\Department.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Models\\LMSModels\\Department.cs",
               "RelativeToolTip": "LMS\\Models\\LMSModels\\Department.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T17:04:39.612Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T17:04:39.612Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
               "Title": "Student.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Models\\LMSModels\\Student.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Models\\LMSModels\\Student.cs",
               "RelativeDocumentMoniker": "LMS\\Models\\LMSModels\\Student.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Models\\LMSModels\\Student.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Models\\LMSModels\\Student.cs",
               "RelativeToolTip": "LMS\\Models\\LMSModels\\Student.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T17:00:36.569Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T17:00:36.569Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Program.cs",
               "RelativeDocumentMoniker": "LMS\\Program.cs",
-              "ToolTip": "C:\\Users\\ewlag\\source\\repos\\Project-3\\LMS\\Program.cs",
+              "ToolTip": "C:\\Users\\njc75\\Downloads\\LMSHandout\\Project-3\\LMS\\Program.cs",
               "RelativeToolTip": "LMS\\Program.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAcwCYAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAcwBMAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T16:21:29.934Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T16:21:29.934Z"
             }
           ]
         }

@@ -102,17 +102,29 @@ namespace LMS.Controllers
         /// <returns>The JSON result</returns>
         public IActionResult GetProfessors(string subject)
         {
-            // this might return duplicate professors if a professor teaches more than 1 class
-            var query = from course in db.Courses
-                        join c in db.Classes on course.CatalogId equals c.Listing
-                        join p in db.Professors on c.TaughtBy equals p.UId
-                        where course.Department == subject
+            
+            var query = from p in db.Professors
+                        where p.WorksIn == subject
                         select new
                         {
                             lname = p.LName,
                             fname = p.FName,
                             uid = p.UId
                         };
+
+            //over cooked with this
+            // this might return duplicate professors if a professor teaches more than 1 class
+            //var query = from course in db.Courses
+            //            join c in db.Classes on course.CatalogId equals c.Listing
+            //            join p in db.Professors on c.TaughtBy equals p.UId
+            //            where course.Department == subject
+            //            select new
+            //            {
+            //                lname = p.LName,
+            //                fname = p.FName,
+            //                uid = p.UId
+            //            };
+
             return Json(query.ToArray());
             
         }
