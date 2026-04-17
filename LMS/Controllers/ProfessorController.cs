@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using LMS.Models.LMSModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 [assembly: InternalsVisibleTo( "LMSControllerTests" )]
@@ -134,7 +135,157 @@ namespace LMS_CustomIdentity.Controllers
             return Json(query.ToArray());
         }
 
+        /// <summary>
+        /// Helper method to update the grades of students
+        /// </summary>
+        /// <param name="subject">The course subject abbreviation</param>
+        /// <param name="num">The course number</param>
+        /// <param name="season">The season part of the semester for the class the assignment belongs to</param>
+        /// <param name="year">The year part of the semester for the class the assignment belongs to</param>
+        /// <param name="uid">The uid of the student who's submission is being </param>
+        /// <returns>true if successful, false otherwise</returns>
+        public bool UpdateGrade(string subject, int num, string season, int year, string uid)
+        {
+            float scorecount;
+            float maxpointcount;
+            float finalscore = 0;
+            float categoryWeightSum = 0;
+            float scalingFactor = 0;
 
+            // get classid
+            var classIDQuery = from c in db.Classes
+                               join co in db.Courses on c.Listing equals co.CatalogId
+                               where co.Department == subject && co.Number == num && c.Season == season && c.Year == year
+                               select c.ClassId;
+
+            uint classID = classIDQuery.FirstOrDefault();
+
+            // get the assignment categories using the class id
+            var assignmentCategoriesQuery = from ac in db.AssignmentCategories
+                                       where ac.InClass == classID
+                                       select ac;
+            // Got an exception because the MySqlConnection was already in use, saw here they use ToList() to solve the problem,
+            // we used ToArray() instead to keep it consistent with the rest of our code
+            // https://stackoverflow.com/questions/65771757/exception-this-mysqlconnection-is-already-in-use-when-using-mysql-server-ho
+            var assignmentCategories = assignmentCategoriesQuery.ToArray();
+
+            // loop through each category
+            foreach(var category in assignmentCategories)
+            {
+                // get the assignments for each category
+                var assignmentsQuery = from a in db.Assignments
+                                  where category.CategoryId == a.Category
+                                  select a;
+
+                var assignments = assignmentsQuery.ToArray();
+
+                //initialize the scorecount and maxpointcount to 0
+                scorecount = 0;
+                maxpointcount = 0;
+               
+                //loop through each assignment
+                foreach (var assignment in assignments)
+                {
+                    //update the max point count
+                    maxpointcount += assignment.MaxPoints;
+                    //get the submissions for the assignment
+                    var submissions = from s in db.Submissions
+                                      where s.Student == uid && s.Assignment == assignment.AssignmentId
+                                      select s;
+
+                    // if the submission exists, add its score to scorecount
+                    var submission = submissions.FirstOrDefault();
+                    if (submission != null)
+                    {
+                        scorecount += submission.Score;
+                    }
+                }
+                // make sure not to divide by 0
+                if(maxpointcount != 0)
+                {
+                    //math from handout
+                    finalscore += scorecount / maxpointcount * category.Weight;
+                    // make sure the weight gets updated if the finalscore gets updated
+                    categoryWeightSum += category.Weight;
+                }
+                
+            }
+
+            // make sure not to divide by 0
+            if (categoryWeightSum != 0)
+            {
+                //calculate scaling factor
+                scalingFactor = 100 / categoryWeightSum;
+            }
+
+            //apply scaling factor
+            finalscore = finalscore * scalingFactor;
+            string finalGrade;
+
+            // get a letter grade depending on the finalscore
+            if(finalscore >= 93)
+            {
+                finalGrade = "A";
+            } else if (finalscore >= 90)
+            {
+                finalGrade = "A-";
+            } else if (finalscore >= 87)
+            {
+                finalGrade = "B+";
+            } else if (finalscore >= 83)
+            {
+                finalGrade = "B";
+            } else if (finalscore >= 80)
+            {
+                finalGrade = "B-";
+            } else if (finalscore >= 77)
+            {
+                finalGrade = "C+";
+            } else if (finalscore >= 73)
+            {
+                finalGrade = "C";
+            } else if (finalscore >= 70)
+            {
+                finalGrade = "C-";
+            } else if (finalscore >= 67)
+            {
+                finalGrade = "D+";
+            } else if (finalscore >= 63)
+            {
+                finalGrade = "D";
+            } else if (finalscore >= 60)
+            {
+                finalGrade = "D-";
+            } else
+            {
+                finalGrade = "E";
+            }
+
+            //update the grade in renrolled
+            var enrolledQuery = from e in db.Enrolleds
+                    where e.Student == uid && e.Class == classID
+                    select e;
+            var enrolled = enrolledQuery.FirstOrDefault();
+
+            //enrolled should never be null but just in case
+            if(enrolled == null)
+            {
+                return false;
+            }
+
+            enrolled.Grade = finalGrade;
+   
+            try
+            { 
+                db.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;                      
+        }
 
         /// <summary>
         /// Returns a JSON array with all the assignments in an assignment category for a class.
@@ -153,17 +304,31 @@ namespace LMS_CustomIdentity.Controllers
         /// or null to return assignments from all categories</param>
         /// <returns>The JSON array</returns>
         public IActionResult GetAssignmentsInCategory(string subject, int num, string season, int year, string category)
-        {
+        {                
             if(category == null)
             {
-
+                var query = from c in db.Classes
+                            where c.Season == season && c.Year == year
+                            join co in db.Courses on c.Listing equals co.CatalogId
+                            where co.Department == subject && co.Number == num
+                            join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                            join a in db.Assignments on ac.CategoryId equals a.Category
+                            select new
+                            {
+                                aname = a.Name,
+                                cname = ac.Name,
+                                due = a.Due,
+                                // assignments have a collection of submissions
+                                submissions = a.Submissions.Count()
+                            };
+                return Json(query.ToArray());
             }
             else
             {
-
-                // not finished yet, submissions count doesnt get updated
                 var query = from c in db.Classes
+                            where c.Season == season && c.Year == year
                             join co in db.Courses on c.Listing equals co.CatalogId
+                            where co.Department == subject && co.Number == num
                             join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
                             join a in db.Assignments on ac.CategoryId equals a.Category
                             where ac.Name == category
@@ -172,10 +337,10 @@ namespace LMS_CustomIdentity.Controllers
                                 aname = a.Name,
                                 cname = ac.Name,
                                 due = a.Due,
-                                submissions = 1
+                                submissions = a.Submissions.Count()
                             };
+                return Json(query.ToArray());
             }
-            return Json(null);
         }
 
 
@@ -283,6 +448,21 @@ namespace LMS_CustomIdentity.Controllers
             {
                 return Json(new { success = false });
             }
+
+            // get all the uids of students in the class
+            var uidQuery = from c in db.Classes
+                           join co in db.Courses on c.Listing equals co.CatalogId
+                           where co.Department == subject && co.Number == num && c.Season == season && c.Year == year
+                           join e in db.Enrolleds on c.ClassId equals e.Class
+                           select e.Student;
+
+            foreach(var uid in uidQuery)
+            {
+                if(!UpdateGrade(subject, num, season, year, uid))
+                {
+                    return Json(new { success = false });
+                }
+            }
             return Json(new { success = true });
         }
 
@@ -364,7 +544,15 @@ namespace LMS_CustomIdentity.Controllers
             {
                 return Json(new { success = false });
             }
-            return Json(new { success = true });
+
+            if(UpdateGrade(subject, num, season, year, uid))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
         }
 
 

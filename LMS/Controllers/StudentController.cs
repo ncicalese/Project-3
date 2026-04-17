@@ -111,28 +111,24 @@ namespace LMS.Controllers
         /// <returns>The JSON array</returns>
         public IActionResult GetAssignmentsInClass(string subject, int num, string season, int year, string uid)
         {
-            // bunch of manual joins
-            //var query = from c in db.Classes
-            //            where c.Season == season
-            //                  && c.Year == year
-            //                  && c.Course.Department == subject
-            //                  && c.Course.Number == num
-            //                  && c.Enrolled.Any(e => e.Student == uid)
-            //            from category in c.AssignmentCategories
-            //            from assignment in category.Assignments
-            //            join submission in db.Submissions.Where(s => s.Student == uid)
-            //                on assignment.AssignmentId equals submission.Assignment into temp
-            //            from sub in temp.DefaultIfEmpty()
-            //            select new
-            //            {
-            //                aname = assignment.Name,
-            //                cname = category.Name,
-            //                due = assignment.Due,
-            //                score = (uint?)sub.Score
-            //            };
-
-            //return Json(query.ToArray());
-            return Json(null);
+            // trying to use an anonymous type for the join on submissions
+            var query = from c in db.Classes
+                        where c.Season == season && c.Year == year
+                        join co in db.Courses on c.Listing equals co.CatalogId
+                        where co.Number == num && co.Department == subject
+                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
+                        join a in db.Assignments on ac.CategoryId equals a.Category
+                        join s in db.Submissions on new { aid = a.AssignmentId, stu = uid } equals new { aid = s.Assignment, stu = s.Student }
+                        into rightSide
+                        from right in rightSide.DefaultIfEmpty()
+                        select new
+                        {
+                            aname = a.Name,
+                            cname = ac.Name,
+                            due = a.Due,
+                            score = (uint?)right.Score
+                        };
+            return Json(query.ToArray());
         }
 
 
