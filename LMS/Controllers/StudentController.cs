@@ -281,11 +281,74 @@ namespace LMS.Controllers
                         where s.UId == uid
                         select e.Grade;
 
+            double sum = 0.0;
+            int count = 0;
+
             foreach(var grade in query)
             {
+              
+                switch (grade){
+                    case "A":
+                        sum += 4;
+                        count++;
+                        break;
+                    case "A-":
+                        sum += 3.7;
+                        count++;
+                        break;
+                    case "B+":
+                        sum += 3.3;
+                        count++;
+                        break;
+                    case "B":
+                        sum += 3.0;
+                        count++;
+                        break;
+                    case "B-":
+                        sum += 2.7;
+                        count++;
+                        break;
+                    case "C+":
+                        sum += 2.3;
+                        count++;
+                        break;
+                    case "C":
+                        sum += 2.0;
+                        count++;
+                        break;
+                    case "C-":
+                        sum += 1.7;
+                        count++;
+                        break;
+                    case "D+":
+                        sum += 1.3;
+                        count++;
+                        break;  
+                    case "D":
+                        sum += 1.0;
+                        count++;
+                        break;
+                    case "D-":
+                        sum += 0.7;
+                        count++;
+                        break;
+                    case "E":
+                        count++;
+                        break;
+                    default:
+                        break;
+                }
+
                 System.Diagnostics.Debug.WriteLine("Grade: " + grade.FirstOrDefault());
             }
-            return Json(null);
+
+            double gpa = 0.0;
+            if(count != 0)
+            {
+                gpa = sum / count;
+            } 
+
+            return Json(gpa);
         }
                 
         /*******End code to modify********/
