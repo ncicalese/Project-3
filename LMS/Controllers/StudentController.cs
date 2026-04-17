@@ -110,23 +110,24 @@ namespace LMS.Controllers
         /// <returns>The JSON array</returns>
         public IActionResult GetAssignmentsInClass(string subject, int num, string season, int year, string uid)
         {
-            // bugged i think
+            // bunch of manual joins
             var query = from c in db.Classes
-                        join course in db.Courses on c.Listing equals course.CatalogId
-                        join e in db.Enrolleds on c.ClassId equals e.Class
-                        join stu in db.Students on e.Student equals stu.UId
-                        join ac in db.AssignmentCategories on c.ClassId equals ac.InClass
-                        join a in db.Assignments on ac.CategoryId equals a.Category
-                        join s in db.Submissions on a.AssignmentId equals s.Assignment
-                        into leftSide
-                        from l in leftSide.DefaultIfEmpty()
-                        where e.Student == uid && course.Department == subject && course.Number == num && c.Season == season && c.Year == year
+                        where c.Season == season
+                              && c.Year == year
+                              && c.Course.Department == subject
+                              && c.Course.Number == num
+                              && c.Enrolled.Any(e => e.Student == uid)
+                        from category in c.AssignmentCategories
+                        from assignment in category.Assignments
+                        join submission in db.Submissions.Where(s => s.Student == uid)
+                            on assignment.AssignmentId equals submission.Assignment into temp
+                        from sub in temp.DefaultIfEmpty()
                         select new
                         {
-                            aname = a.Name,
-                            cname = ac.Name,
-                            due = a.Due,
-                            score = (uint?)l.Score
+                            aname = assignment.Name,
+                            cname = category.Name,
+                            due = assignment.Due,
+                            score = (uint?)sub.Score
                         };
                         
             return Json(query.ToArray());
