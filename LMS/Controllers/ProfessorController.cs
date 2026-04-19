@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -199,16 +200,26 @@ namespace LMS_CustomIdentity.Controllers
                     {
                         scorecount += submission.Score;
                     }
+
+                    //System.Diagnostics.Debug.WriteLine("Submission Score: " + submission.Score.ToString());
+
                 }
                 // make sure not to divide by 0
                 if(maxpointcount != 0)
                 {
                     //math from handout
-                    finalscore += scorecount / maxpointcount * category.Weight;
+                    finalscore += (scorecount / maxpointcount) * category.Weight;
+                    float tempfinalscore = scorecount / maxpointcount;
+                    tempfinalscore = tempfinalscore * category.Weight;
                     // make sure the weight gets updated if the finalscore gets updated
                     categoryWeightSum += category.Weight;
                 }
-                
+
+                //System.Diagnostics.Debug.WriteLine("Assignment Category: " + category.Name);
+                //System.Diagnostics.Debug.WriteLine("Assignment Category Score Count: " + scorecount.ToString());
+                //System.Diagnostics.Debug.WriteLine("Assignment Category Max Point Count: " + maxpointcount.ToString());
+                //System.Diagnostics.Debug.WriteLine("Assignment Category Final Score: " + finalscore.ToString());
+                //System.Diagnostics.Debug.WriteLine("Assignment Category Weight Sum: " + categoryWeightSum.ToString());
             }
 
             // make sure not to divide by 0
@@ -221,6 +232,8 @@ namespace LMS_CustomIdentity.Controllers
             //apply scaling factor
             finalscore = finalscore * scalingFactor;
             string finalGrade;
+
+            System.Diagnostics.Debug.WriteLine("Final Score: " + finalscore.ToString());
 
             // get a letter grade depending on the finalscore
             if(finalscore >= 93)
@@ -318,6 +331,7 @@ namespace LMS_CustomIdentity.Controllers
                                 aname = a.Name,
                                 cname = ac.Name,
                                 due = a.Due,
+
                                 // assignments have a collection of submissions
                                 submissions = a.Submissions.Count()
                             };
@@ -456,7 +470,9 @@ namespace LMS_CustomIdentity.Controllers
                            join e in db.Enrolleds on c.ClassId equals e.Class
                            select e.Student;
 
-            foreach(var uid in uidQuery)
+            var uidArray = uidQuery.ToArray();
+
+            foreach(var uid in uidArray)
             {
                 if(!UpdateGrade(subject, num, season, year, uid))
                 {

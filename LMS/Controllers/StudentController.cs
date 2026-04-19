@@ -172,8 +172,6 @@ namespace LMS.Controllers
                                   where s.Student == uid && s.Assignment == assignmentID
                                   select s.SubmissionContents;
 
-            
-
             // if there is no submission, create a new one
             if(submissionQuery.FirstOrDefault() == null)
             {
@@ -278,11 +276,10 @@ namespace LMS.Controllers
                         select e.Grade;
 
             double sum = 0.0;
-            int count = 0;
+            double count = 0;
 
             foreach(var grade in query)
             {
-              
                 switch (grade){
                     case "A":
                         sum += 4;
@@ -334,17 +331,18 @@ namespace LMS.Controllers
                     default:
                         break;
                 }
-
-                System.Diagnostics.Debug.WriteLine("Grade: " + grade.FirstOrDefault());
+                //System.Diagnostics.Debug.WriteLine("Grade: " + grade);
             }
 
             double gpa = 0.0;
             if(count != 0)
             {
                 gpa = sum / count;
-            } 
+            }
 
-            return Json(gpa);
+            //System.Diagnostics.Debug.WriteLine("GPA: " + gpa.ToString());
+
+            return Json(new {gpa = gpa});
         }
                 
         /*******End code to modify********/
